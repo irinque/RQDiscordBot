@@ -51,13 +51,21 @@ async def send_all(interaction: discord.Interaction):
                 await interaction.delete_original_response()
         await interaction.response.send_modal(SendApplication())
     view = View()
-    dropdown = discord.ui.ChannelSelect(channel_types=[discord.ChannelType.text], min_values=1, max_values=1)
+    dropdown = discord.ui.ChannelSelect(channel_types=[discord.ChannelType.text, discord.ChannelType.news], min_values=1, max_values=1)
     dropdown.callback = select_callback
     view.add_item(dropdown)
     selection = await interaction.channel.send(view=view)
     await interaction.response.send_message(f"Выберите канал для отправки:")
     await interaction.delete_original_response()
-    
+
+
+@bot.tree.command(name="send_embeds", description="Send embeds with infomation")
+async def send_embeds(interaction: discord.Interaction):
+    channel = get(interaction.guild.channels, id=int(сhannel_rules_data))
+    embed = discord.Embed(title="ㅤㅤㅤㅤㅤㅤ 📙 ПРАВИЛА СЕРВЕРА 📙 ㅤㅤㅤㅤㅤㅤ", description="**1.** Запрещено оскорбление участников сервера;\n**2.** Запрещено разжигание ненависти;\n**3.** Запрещено обсуждение политики;\n**4.** Запрещено публиковать непристойный контент;\n**5.** Запрещено публиковать личные данные участников сервера;\n**6.** Запрещено рассылать спам и заниматься саморекламой;\n\n**Наказание: Временный бан(Mute)/Перманентный бан**", colour=discord.Colour.from_str(color_main))
+    await channel.send(embed=embed)
+    await interaction.response.send_message(f"сообщение отправлено")
+    await interaction.delete_original_response()
 
 
 if __name__ == "__main__":

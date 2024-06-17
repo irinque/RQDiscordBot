@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
-from discord.ui import Button, View, Modal
+from discord.ui import View
 from discord.utils import get
-from discord import app_commands
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from config import *
 
 intents = discord.Intents().all()

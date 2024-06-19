@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ui import View
 from discord.utils import get
 from config import *
+from protected_data import TOKEN
 
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents().all())

@@ -1,5 +1,3 @@
-TOKEN = ""
-
 color_main = "#776894"
 
 category_voices_data = 1251293179496501410

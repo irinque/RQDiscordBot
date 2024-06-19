@@ -6,7 +6,7 @@ from config import *
 
 intents = discord.Intents().all()
 bot = commands.Bot(command_prefix="!", intents=discord.Intents().all())
-client = discord.Client
+client = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():

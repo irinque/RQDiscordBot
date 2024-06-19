@@ -8,3 +8,5 @@ channel_admin_data = 1252029014118498334
 channel_voices_whitelist = [channel_voice_data, channel_movieroom_data, channel_admin_data]
 channel_newmembers_data = 1251303923742937148
 сhannel_rules_data = 1251242870367584309
+
+role_user_data = 1251308137680605195

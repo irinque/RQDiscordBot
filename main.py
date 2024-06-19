@@ -15,10 +15,12 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member: discord.Member):
+    role_viewer = get(member.guild.roles, id=role_user_data)
     channel = get(member.guild.channels, id=int(channel_newmembers_data))
     embed = discord.Embed(title="У нас новенький!", description=f"К нам зашел {member.display_name}!", colour=discord.Colour.from_str(color_main))
-    embed.set_author(icon_url=member.avatar.url)
-    channel.send(embed=embed)
+    embed.set_thumbnail(url=member.avatar.url)
+    await member.add_roles(role_viewer)
+    await channel.send(embed=embed)
 
 @bot.event
 async def on_voice_state_update(member, before, after):

@@ -15,11 +15,11 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    role_viewer = get(member.guild.roles, id=role_user_data)
+    role_user = get(member.guild.roles, id=role_user_data)
     channel = get(member.guild.channels, id=int(channel_newmembers_data))
     embed = discord.Embed(title="У нас новенький!", description=f"К нам зашел {member.display_name}!", colour=discord.Colour.from_str(color_main))
     embed.set_thumbnail(url=member.avatar.url)
-    await member.add_roles(role_viewer)
+    await member.add_roles(role_user)
     await channel.send(embed=embed)
 
 @bot.event
@@ -42,14 +42,21 @@ async def send_all(interaction: discord.Interaction):
         class SendApplication(discord.ui.Modal, title="📝 EMBED"):
             message_title = discord.ui.TextInput(label="🎴 ЗАГОЛОВОК", style=discord.TextStyle.short)
             description = discord.ui.TextInput(label="🀄 ОПИСАНИЕ", style=discord.TextStyle.long, required=True)
+            mention = discord.ui.TextInput(label="📣 УПОМИНАНИЕ(Да/Нет)", style=discord.TextStyle.short, required=False)
             image = discord.ui.TextInput(label="🌄 КАРТИНКА", style=discord.TextStyle.short, required=False)
             async def on_submit(self, interaction: discord.Interaction):
                 embed = discord.Embed(title=self.message_title, description=self.description, colour=discord.Colour.from_str(color_main))
                 if self.image:
                     embed.set_image(url=self.image)
-                await channel.send(embed=embed)
-                await interaction.response.send_message(f"сообщение отправлено")
-                await interaction.delete_original_response()
+                role_user = get(interaction.guild.roles, id=role_user_data)
+                if str(self.mention).lower() == "да":
+                    await channel.send(content=f"{role_user.mention}", embed=embed)
+                    await interaction.response.send_message(f"сообщение отправлено")
+                    await interaction.delete_original_response()
+                if str(self.mention).lower() == "нет":
+                    await channel.send(embed=embed)
+                    await interaction.response.send_message(f"сообщение отправлено")
+                    await interaction.delete_original_response()
         await interaction.response.send_modal(SendApplication())
     view = View()
     dropdown = discord.ui.ChannelSelect(channel_types=[discord.ChannelType.text, discord.ChannelType.news], min_values=1, max_values=1)

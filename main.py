@@ -34,15 +34,14 @@ async def on_voice_state_update(member, before, after):
     
 
 @bot.tree.command(name="custom_embed", description="Embed to channel")
-async def send_all(interaction: discord.Interaction):
+async def custom_embed(interaction: discord.Interaction):
     async def select_callback(interaction: discord.Interaction):
-        await selection.delete()
         channel_name = dropdown.values[0]
         channel = discord.utils.get(interaction.guild.channels, name=str(channel_name))
         class SendApplication(discord.ui.Modal, title="📝 EMBED"):
             message_title = discord.ui.TextInput(label="🎴 ЗАГОЛОВОК", style=discord.TextStyle.short)
             description = discord.ui.TextInput(label="🀄 ОПИСАНИЕ", style=discord.TextStyle.long, required=True)
-            mention = discord.ui.TextInput(label="📣 УПОМИНАНИЕ(Да/Нет)", style=discord.TextStyle.short, required=False)
+            mention = discord.ui.TextInput(label="📣 УПОМИНАНИЕ(Да/Нет)", style=discord.TextStyle.short, required=True)
             image = discord.ui.TextInput(label="🌄 КАРТИНКА", style=discord.TextStyle.short, required=False)
             async def on_submit(self, interaction: discord.Interaction):
                 embed = discord.Embed(title=self.message_title, description=self.description, colour=discord.Colour.from_str(color_main))
@@ -57,6 +56,7 @@ async def send_all(interaction: discord.Interaction):
                     await channel.send(embed=embed)
                     await interaction.response.send_message(f"сообщение отправлено")
                     await interaction.delete_original_response()
+                await selection.delete()
         await interaction.response.send_modal(SendApplication())
     view = View()
     dropdown = discord.ui.ChannelSelect(channel_types=[discord.ChannelType.text, discord.ChannelType.news], min_values=1, max_values=1)
